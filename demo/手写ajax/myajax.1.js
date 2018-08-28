@@ -30,7 +30,7 @@ function xl(url){
 	 * JSON.parse为将json字符串转换为json对象的函数，js原生函数
 	 */
 	
-	let onstatuschange = function (_http,method,resolve,reject) {
+	let onstatuschange = function (_http,method) {
 		if(_http.readyState == 4){
 			if(_http.status == 200){
 				method.success(JSON.parse(_http.responseText))
@@ -41,12 +41,12 @@ function xl(url){
 	}
 	
 	/**
-	 * 暴露一个get函数
+	 * 私有一个get函数
 	 * 实现了一个XMLHttpRequest.get 的接口接收一个json参数，内容为url，data，成功的回调和失败的回调，
 	 * 
-	 * 待优化 完成一个遵循promise 规范的接口，返回一个promise的对象实现链式调用
+	 * 已经优化 完成一个遵循promise 规范的接口，返回一个promise的对象实现链式调用
 	 */
-		let	GET = get => { //小坑，用箭头函数将this保持不变
+	let	GET = get => { //小坑，用箭头函数将this保持不变
 		http.open('GET',this.baseUrl+get.url+this.stringify(get.data,'get'))
 		http.onreadystatechange = function(){
 			onstatuschange(http,get);
@@ -54,14 +54,29 @@ function xl(url){
 		http.send();
 	}
 	
+
 	/**
-	 * 实现了get方法的promise封装get接收json参数为url和data
+	 *私有一个post方法
+	 *
+	 *已经优化 完成一个遵循promise 规范的接口，返回一个promise的对象实现链式调用
+	 */
+
+	 let POST = post => {
+	 	http.open('POST',this.baseUrl+post.url);
+	 	http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');/*设置发送的数据格式为formdata类型*/
+	 	http.onreadystatechange = function () {
+	 		onstatuschange(http,post)
+	 	}
+	 	http.send(this.stringify(post.data))
+	 }
+
+	/**
+	 * 实现了get方法的promise封装,get接收json参数为url和data
 	 * 返回了一个promise对象用于链式调用
 	 */
 	
 	this.get = function(get){
-		let a = new Promise((resolve,reject) => {
-			// let xl = new xl('http://app.iushan.com');
+		return new Promise((resolve,reject) => {
 			GET({
 				url: get.url,
 				data: get.data,
@@ -73,6 +88,35 @@ function xl(url){
 				} 
 			})
 		})
-		return a
 	}
+
+	/**
+	 * 实现了post方法的promise封装,post接收json参数为url和data
+	 * 返回了一个promise对象用于链式调用
+	 */
+
+	 this.post = function(post){
+	 	return new Promise((resolve,reject) => {
+	 		POST({
+	 			url: post.url,
+	 			data: post.data,
+	 			success: function(data) {
+	 				resolve(data)
+	 			},
+	 			error: function(err) {
+	 				reject(err)
+	 			}
+	 		})
+	 	})
+	 }
+
+	 this.ajax = function (ajax) {
+	 	if(ajax.type === 'post'){
+			return this.post(ajax)
+		}else if(ajax.type === 'get'){
+			return this.get(ajax)
+		}else{
+			throw 'ajax的type错误，正确的方法为post或者get' 
+		}
+	 }
 }

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>my_ajax</title>
+		<title>my_ajax_promise</title>
 		<script src="myajax.1.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
@@ -17,13 +17,6 @@
 		/**
 		 * get方式测试
 		 */
-// 		function get () {
-// 			let data = {
-// 				uid: 1,
-// 				type: 1
-// 			}
-// 			$.get({url: '/users/address/read',data: data})
-// 		}
 		function get (){
 			let data = {
 				uid: 1,
@@ -31,6 +24,61 @@
 			}
 			$.get({url: '/users/address/read',data: data}).then(data => {
 				alert(JSON.stringify(data))
+			})
+		}
+		/**
+		 *post方法测试
+		 */
+		 function post () {
+		 	let data = {
+				tel: 17748132236,
+				password: 654321,
+				type: 1
+			}
+			$.post({url: '/password_login',data: data}).then(data => {
+				alert(JSON.stringify(data))
+			}, err => {
+				alert(JSON.stringify(err))
+			})
+		 }
+
+		 /**
+		  *ajax.post方法测试
+		  *
+		  */
+
+		 function ajax_post(){
+			let data = {
+				tel: 17748132236,
+				password: 654321,
+				type: 1
+			}
+			$.ajax({
+				type: 'post',
+				url: '/password_login',
+				data: data,
+			}).then(data => {
+				alert(JSON.stringify(data))
+			},err =>{
+				alert(JSON.stringify(err))
+			})
+		}
+		/**
+		 * ajax的get方式测试
+		 */
+		function ajax_get(){
+			let data = {
+				uid: 1,
+				type: 1
+			}
+			$.ajax({
+				type: 'get',
+				url: '/users/address/read',
+				data: data,
+			}).then(data => {
+				alert(JSON.stringify(data))
+			},err =>{
+				alert(JSON.stringify(err))
 			})
 		}
 	</script>
