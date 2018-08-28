@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>my_ajax</title>
+		<script src="myajax.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<button onclick="get()" type="button">get 测试</button>
+		<button onclick="post()" type="button">post 测试</button>
+		<button onclick="ajax_post()" type="button">ajax 测试post</button>
+		<button onclick="ajax_get()" type="button">ajax 测试get</button>
+	</body>
+	<script type="text/javascript">
+		var $ = new xl('http://app.iushan.com')
+		/**
+		 * get方式测试
+		 */
+		function get () {
+			let data = {
+				uid: 1,
+				type: 1
+			}
+			$.get({
+				url: '/users/address/read',
+				data: data,
+				success: function(data) {
+					alert(JSON.stringify(data));
+				},
+				error: function(err){
+					alert(JSON.stringify(err));
+				}
+			})
+			
+		}
+		/**
+		 * post方式测试
+		 */
+		function post() {
+			let data = {
+				tel: 17748132236,
+				password: 123456,
+				type: 1
+			}
+			$.post({
+				url: '/password_login',
+				data: data,
+				success: function(data){
+					alert(JSON.stringify(data));
+				},
+				error: function(err){
+					alert(JSON.stringify(err))
+				}
+			})
+		}
+		/**
+		 * ajax.post方式测试
+		 */
+		function ajax_post(){
+			let data = {
+				tel: 17748132236,
+				password: 123456,
+				type: 1
+			}
+			$.ajax({
+				type: 'post',
+				url: '/password_login',
+				data: data,
+				success: function(data){
+					alert(JSON.stringify(data));
+				},
+				error: function(err){
+					alert(JSON.stringify(err))
+				}
+			})
+		}
+		/**
+		 * ajax的get方式测试
+		 */
+		function ajax_get(){
+			let data = {
+				uid: 1,
+				type: 1
+			}
+			$.ajax({
+				type: 'get',
+				url: '/users/address/read',
+				data: data,
+				success: function(data) {
+					alert(JSON.stringify(data));
+				},
+				error: function(err){
+					alert(JSON.stringify(err));
+				}
+			})
+		}
+		console.dir(Promise)
+	</script>
+</html>
