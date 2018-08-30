@@ -4,7 +4,7 @@
  * 实现了一个简单的基于原生js的xmlhttprequest ajax方法，暴露了3个重要的函数，post和get和ajax
  */
 
-function Myajax () {
+export default new function () {
   this.baseurl = '11111111'
   let http = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
 
@@ -62,7 +62,8 @@ function Myajax () {
 
   let POST = post => {
     http.open('POST', this.baseUrl + post.url)
-    http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')/* 设置发送的数据格式为formdata类型 */
+    http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    /* 设置发送的数据格式为formdata类型 */
     http.onreadystatechange = function () {
       onstatuschange(http, post)
     }
@@ -117,6 +118,4 @@ function Myajax () {
       throw 'ajax的type错误，正确的方法为post或者get'
     }
   }
-}
-let a = new Myajax()
-export default a
+}()

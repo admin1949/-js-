@@ -4,8 +4,8 @@ import myajax from '@/api/my_ajax'
 
 // xl.baseUrl = '5151515'
 // console.log(myajax().baseUrl)
-// alert(xx().name)
-// console.log(myajax)
+// alert(xx.a)
+// console.log(myajax.baseurl)
 
 myajax.baseUrl = 'http://app.iushan.com'
 
